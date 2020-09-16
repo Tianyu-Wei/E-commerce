@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <input th:value="${skuInfo.skuName}"/>
+<table>
+    <tr th:each="skuImage:${skuInfo.skuImageList}">
+        <td th:text="${skuImage.imgName} == 'iphone.jpg'? 'IP.jpg' : ${skuImage.imgName}">
+
+        </td>
+    </tr>
+</table>
+</body>
+</html>

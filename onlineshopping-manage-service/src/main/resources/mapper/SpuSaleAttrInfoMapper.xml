@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tyw.onlineshopping.manage.mapper.SpuSaleAttrMapper">
+    <select id="getSpuSaleAttrListBySpuId" resultMap="saleAttrList">
+        select
+        sa.id, sa.spu_id, sa.sale_attr_id, sa.sale_attr_name,
+        sv.id sale_attr_value_id, sv.sale_attr_value_name
+        from `spu_sale_attr` sa join `spu_sale_attr_value` sv on sa.sale_attr_id = sv.sale_attr_id and
+        sa.spu_id=sv.spu_id
+        where sa.spu_id = #{spuId}
+    </select>
+    <resultMap id="saleAttrList" type="com.tyw.onlineshopping.bean.SpuSaleAttr">
+        <result property="id" column="id"></result>
+        <result property="spuId" column="spu_id"></result>
+        <result property="saleAttrId" column="sale_attr_id"></result>
+        <result property="saleAttrName" column="sale_attr_name"></result>
+        <collection property="spuSaleAttrValueList" ofType="com.tyw.onlineshopping.bean.SpuSaleAttrValue" autoMapping="true">
+            <result property="id" column="sale_attr_value_id"></result>
+            <result property="spuId" column="spu_id"></result>
+            <result property="saleAttrId" column="sale_attr_id"></result>
+            <result property="saleAttrValueName" column="sale_attr_value_name"></result>
+        </collection>
+    </resultMap>
+    <select id="getSpuSaleAttrListBySpuIdCheckSku" resultMap="saleAttrList">
+        select
+        sa.id, sa.spu_id, sa.sale_attr_id, sa.sale_attr_name,
+        sv.id sale_attr_value_id, sv.sale_attr_value_name,
+        if(sav.sale_attr_value_id is null, '0', '1') is_checked
+        from `spu_sale_attr` sa join `spu_sale_attr_value` sv on sa.sale_attr_id = sv.sale_attr_id and
+        sa.spu_id=sv.spu_id
+        left join sku_sale_attr_value sav on sv.id=sav.sale_attr_value_id and sav.sku_id=#{spuId}
+        where sa.spu_id = #{spuId};
+    </select>
+</mapper>

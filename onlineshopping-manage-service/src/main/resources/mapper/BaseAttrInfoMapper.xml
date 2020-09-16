@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tyw.onlineshopping.manage.mapper.BaseAttrInfoMapper">
+    <select id="getBaseAttrInfoListByCatalog3Id" resultMap="baseAttrList">
+        select bi.id, bi.attr_name, bi.catalog3_id, bv.id attr_value_id, bv.value_name
+        from `base_attr_info` bi inner join `base_attr_value` bv on bi.id = bv.attr_id
+        where bi.catalog3_id=#{catalog3Id};
+    </select>
+
+    <select id="getBaseAttrInfoListByValueIds" resultMap="baseAttrList">
+        select bi.id, bi.attr_name, bi.catalog3_id, bv.id attr_value_id, bv.value_name
+        from `base_attr_info` bi inner join `base_attr_value` bv on bi.id = bv.attr_id
+        where bv.id in (${valueIds});
+    </select>
+
+    <resultMap id="baseAttrList" type="com.tyw.onlineshopping.bean.BaseAttrInfo">
+        <result property="id" column="id"></result>
+        <result property="attrName" column="attr_name"></result>
+        <result property="catalog3Id" column="catalog3_id"></result>
+        <collection property="attrValueList" ofType="com.tyw.onlineshopping.bean.BaseAttrValue">
+            <result property="id" column="attr_value_id"></result>
+            <result property="valueName" column="value_name"></result>
+            <result property="attrId" column="id"></result>
+        </collection>
+    </resultMap>
+</mapper>
